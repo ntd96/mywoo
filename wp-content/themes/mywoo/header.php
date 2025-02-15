@@ -34,29 +34,34 @@
                 ?>
             </nav>
 
-            <?php if (is_user_logged_in()) : ?>
-                <?php $current_user = wp_get_current_user(); ?>
-                <div class="user-menu">
-                    <a href="#" class="user-toggle">
-                        <i class="fa fa-user"></i>
-                        <span class="user-name"><?php echo esc_html($current_user->display_name); ?></span>
+            <div class="info-woo-header">
+                <!-- Phần này xử lí icon user login/logout -->
+                <?php if (is_user_logged_in()) : ?>
+                    <?php $current_user = wp_get_current_user(); ?>
+                    <div class="user-menu">
+                        <a href="#" class="user-toggle">
+                            <i class="fa fa-user"></i>
+                            <span class="user-name"><?php echo esc_html($current_user->display_name); ?></span>
+                        </a>
+                        <ul class="user-dropdown">
+                            <li><a href="<?php echo esc_url(get_permalink(get_option('woocommerce_myaccount_page_id'))); ?>">My Account</a></li>
+                            <li><a href="<?php echo esc_url(wp_logout_url(home_url())); ?>">Logout</a></li>
+                        </ul>
+                    </div>
+                <?php else : ?>
+                    <a href="#login-popup" data-fancybox class="open-login-popup">
+                        <i class="fa fa-user"></i> Login
                     </a>
-                    <ul class="user-dropdown">
-                        <li><a href="<?php echo esc_url(get_permalink(get_option('woocommerce_myaccount_page_id'))); ?>">Tài khoản của tôi</a></li>
-                        <li><a href="<?php echo esc_url(wp_logout_url(home_url())); ?>">Đăng xuất</a></li>
-                    </ul>
-                </div>
-            <?php else : ?>
-                <a href="<?php echo esc_url(wp_login_url()); ?>">
-                    <i class="fa fa-user"></i> Đăng nhập
+                    <!-- Gọi login khi click #login-popup -->
+                    <?php get_template_part('templates/user/login') ?>
+                <?php endif; ?>
+
+                <!-- Phần này là phần cart -->
+                <a href="<?php echo wc_get_cart_url(); ?>">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-count"><?php echo WC()->cart->get_cart_contents_count(); ?></span>
                 </a>
-            <?php endif; ?>
-
-
-            <a href="<?php echo wc_get_cart_url(); ?>">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span class="cart-count"><?php echo WC()->cart->get_cart_contents_count(); ?></span>
-            </a>
+            </div>
 
             <!-- Nút Toggle Menu (Mobile) -->
             <button class="menu-toggle">☰</button>
