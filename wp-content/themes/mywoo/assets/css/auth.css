@@ -1,0 +1,66 @@
+.auth {
+    height: 100%;
+}
+
+.auth {
+    position: relative;
+    width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    transition: 0.5s;
+    padding: 40px;
+}
+
+.login-form {
+    left: 0;
+}
+
+.register-form {
+    left: 100%;
+}
+
+.overlay {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background: #3498db;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    transition: 0.5s;
+    right: 0;
+}
+
+.overlay button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    background: #fff;
+    color: #3498db;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.auth.active .overlay {
+    right: 50%;
+}
+
+.auth.active .login-form {
+    left: -100%;
+}
+
+.auth.active .register-form {
+    left: 50%;
+}

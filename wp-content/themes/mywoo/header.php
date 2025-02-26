@@ -49,11 +49,9 @@
                         </ul>
                     </div>
                 <?php else : ?>
-                    <a href="#login-popup" data-fancybox class="open-login-popup">
+                    <a href="<?php echo home_url('/login') ?>">
                         <i class="fa fa-user"></i> Login
                     </a>
-                    <!-- Gọi login khi click #login-popup -->
-                    <?php get_template_part('templates/user/login') ?>
                 <?php endif; ?>
 
                 <!-- Phần này là phần cart -->

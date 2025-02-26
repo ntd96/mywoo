@@ -3,29 +3,48 @@ jQuery(document).ready(function ($) {
     $('[data-fancybox]').fancybox({
         touch: false
     });
-    $('#custom-login-form').on('submit', function(e) {
-        e.preventDefault();
 
-        var formData = $(this).serialize() + '&action=custom_ajax_login&security=' + custom_login.security;
+
+    // -- Xứ lí ajax Login
+    $('#login-form').submit(function (e) {
+        e.preventDefault();
+        let formData = $(this).serialize() + '&action=custom_login&security=' + ajax_object.security;
         $.ajax({
             type: 'POST',
-            url: custom_login.ajax_url,
+            url: ajax_object.ajax_url,
             data: formData,
             dataType: 'json',
-            beforeSend: function() {
-                $('#spinner').show();
+            beforeSend: function () {
+                $('#spinner').show()
             },
-            success: function(response) {
-                $('#spinner').hide(); // Ẩn spinner thay vì remove
-                if (response.status) {
-                    $('#login-message').html(response.message);
-                    setTimeout(function() {
-                        location.reload();
-                    }, 3000);
+            success: function (res) {
+                if (res.success) {
+                    let countdown = 3;
+                    $.fancybox.open(`<div class="custom-popup">${res.data.message}, chuyển hướng về trang chủ sau: <span class="countdown-login">${countdown}</span>s</div>`, {
+                        modal: true, smallBtn: false
+                    });
+                    let timer = setInterval(() => {
+                        countdown--;
+                        $('.countdown-login').text(countdown);
+                        if (countdown == 0) {
+                            window.location.href = res.data.redirect;
+                            clearInterval(timer);
+                        }
+                    }, 1000)
                 } else {
-                    $('#login-message').html(response.message);
+                    $.fancybox.open(`<div class="custom-popup">${res.data.message}</div>`);
                 }
+            },
+            complete: function () {
+                $('#spinner').hide();
+            },
+            error: function (xhr, status, error) {
+                console.log("Lỗi AJAX:", status, error);
+                console.log("Phản hồi từ server:", xhr.responseText);
             }
         });
-    });
+    })
+
+    // Xử lí tác
+
 })
