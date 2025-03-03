@@ -4,6 +4,19 @@
  * Hàm hỗ trợ cần thiết cho theme
  */
 
+function debug_to_console($data, $context = 'Debug in Console')
+{
+
+    // Buffering to solve problems frameworks, like header() in this and not a solid return.
+    ob_start();
+
+    $output  = 'console.info(\'' . $context . ':\');';
+    $output .= 'console.log(' . json_encode($data) . ');';
+    $output  = sprintf('<script>%s</script>', $output);
+
+    echo $output;
+}
+
 // Disable emoji cho bớt nặng
 function mytheme_disable_emojis()
 {
@@ -27,10 +40,3 @@ function register_custom_templates($templates)
 }
 add_filter('theme_page_templates', 'register_custom_templates');
 
-// Tự động redirect về home nếu user đã login và còn ở login.
-add_action('template_redirect', function() {
-    if (is_user_logged_in() && is_page('login')) {
-        wp_redirect(home_url());
-        exit;
-    }
-});

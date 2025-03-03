@@ -11,6 +11,7 @@
 
     <header class="site-header">
         <div class="container">
+            
             <!-- Hiển thị Logo -->
             <div class="site-logo">
                 <?php if (has_custom_logo()) : ?>
@@ -41,7 +42,7 @@
                     <div class="user-menu">
                         <a href="#" class="user-toggle">
                             <i class="fa fa-user"></i>
-                            <span class="user-name"><?php echo esc_html($current_user->display_name); ?></span>
+                            <span class="user-name"><?php echo esc_html(empty($current_user->display_name) ? $current_user->user_login : $current_user->display_name ); ?></span>
                         </a>
                         <ul class="user-dropdown">
                             <li><a href="<?php echo esc_url(get_permalink(get_option('woocommerce_myaccount_page_id'))); ?>">My Account</a></li>
