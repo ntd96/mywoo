@@ -11,14 +11,14 @@
 
     <header class="site-header">
         <div class="container">
-            
+
             <!-- Hiển thị Logo -->
             <div class="site-logo">
                 <?php if (has_custom_logo()) : ?>
                     <?php the_custom_logo(); ?>
                 <?php else : ?>
                     <a href="<?php echo esc_url(home_url('/')); ?>">
-                        <h1><?php bloginfo('name'); ?></h1>
+                        <img src="<?php echo get_theme_file_uri() . '/assets/images/logook2.png' ?>" alt="Ninisesi">
                     </a>
                 <?php endif; ?>
             </div>
@@ -42,7 +42,7 @@
                     <div class="user-menu">
                         <a href="#" class="user-toggle">
                             <i class="fa fa-user"></i>
-                            <span class="user-name"><?php echo esc_html(empty($current_user->display_name) ? $current_user->user_login : $current_user->display_name ); ?></span>
+                            <span class="user-name"><?php echo esc_html(empty($current_user->display_name) ? $current_user->user_login : $current_user->display_name); ?></span>
                         </a>
                         <ul class="user-dropdown">
                             <li><a href="<?php echo esc_url(get_permalink(get_option('woocommerce_myaccount_page_id'))); ?>">My Account</a></li>
@@ -54,16 +54,23 @@
                         <i class="fa fa-user"></i> Login
                     </a>
                 <?php endif; ?>
-
+                <div class="line-head"></div>
                 <!-- Phần này là phần cart -->
                 <a href="<?php echo wc_get_cart_url(); ?>">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span class="cart-count"><?php echo WC()->cart->get_cart_contents_count(); ?></span>
                 </a>
+                <div class="line-head"></div>
+                <!-- Button Humberger -->
+                <button class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
 
-            <!-- Nút Toggle Menu (Mobile) -->
-            <button class="menu-toggle">☰</button>
+            <!-- Nút Toggle Menu  -->
+
         </div>
     </header>
 

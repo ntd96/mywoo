@@ -34,9 +34,11 @@
 }
 
 .site-header {
-    background: #fff;
-    padding: 15px 0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: transparent;
+    position: absolute;
+    top: 5px;
+    z-index: 999;
+    width: 100%;
 }
 
 .site-header .site-logo {
@@ -55,7 +57,14 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 15px;
+    gap: 20px;
+}
+
+.site-header .info-woo-header a {
+    color: #333;
+    letter-spacing: 1px;
+    font-size: 18px;
+    position: relative;
 }
 
 .site-logo img {
@@ -63,9 +72,10 @@
 }
 
 .nav-menu {
-    list-style: none;
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
+    flex-direction: column;
 }
 
 .nav-menu li {
@@ -75,16 +85,97 @@
 .nav-menu a {
     text-decoration: none;
     color: #333;
-    font-weight: bold;
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-size: 18px;
+}
+
+/* Xử lí icon humberger */
+.main-navigation {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 30%;
+    height: 100vh;
+    background: #333;
+    transition: right 0.5s ease;
+    z-index: 999;
+    padding: 20px;
+}
+
+.main-navigation .nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.main-navigation .nav-menu li {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.main-navigation .nav-menu li a {
+    color: white;
+    text-decoration: none;
+    display: block;
 }
 
 .menu-toggle {
-    display: none;
-    background: none;
+    /* position: relative;
+    right: 20px; */
+    z-index: 1000;
+    width: 35px;
+    height: 20px;
+    background: transparent;
     border: none;
-    font-size: 24px;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.5s ease;
 }
+
+header .fixed-position {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
+    transition: all 0.5s;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 100%;
+    height: 4px;
+    background: #333;
+    transition: all 0.5s ease;
+}
+
+.menu-open .main-navigation {
+    right: 0;
+}
+
+.menu-open .menu-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    transform: translateX(-10px);
+    /* Hiệu ứng kéo nhẹ */
+}
+
+/* Hiệu ứng icon */
+.menu-open .menu-toggle span:nth-child(1) {
+    transform: translateY(5px) rotate(45deg);
+}
+
+.menu-open .menu-toggle span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-open .menu-toggle span:nth-child(3) {
+    transform: translateY(-10px) rotate(-45deg);
+}
+
 
 /* User icon header */
 .info-woo-header .user-menu {
@@ -101,6 +192,31 @@
     cursor: pointer;
 }
 
+.info-woo-header .line-head {
+    background-color: #33333369;
+    width: 1px;
+    height: 3vh;
+    color: aquamarine;
+}
+
+.info-woo-header .cart-count {
+    font-size: 10px;
+    position: absolute;
+    top: -13px;
+    background-color: red;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 15px;
+    border: 2px solid #F2F2F2;
+    font-weight: 700;
+    color: #fff;
+    overflow: hidden;
+}
+
 .info-woo-header .user-dropdown {
     position: absolute;
     top: 100%;
@@ -112,10 +228,8 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     display: none;
-    /* Ẩn mặc định */
     min-width: 150px;
     z-index: 1000;
-    /* Đảm bảo nằm trên */
 }
 
 .info-woo-header .user-dropdown li {
@@ -149,7 +263,7 @@
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1440px;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -193,9 +307,5 @@
     .nav-menu {
         display: none;
         flex-direction: column;
-    }
-
-    .menu-toggle {
-        display: block;
     }
 }
