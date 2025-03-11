@@ -33,7 +33,7 @@ function mytheme_enqueue_scripts()
     // Locallize
     wp_localize_script('ajaxJs', 'ajax_object', array(
         'ajax_url' => admin_url('admin-ajax.php'),
-        'security' => wp_create_nonce('nonce')
+        'security' => wp_create_nonce('nonce'),
     ));
 }
 add_action('wp_enqueue_scripts', 'mytheme_enqueue_scripts');

@@ -26,7 +26,7 @@ class AuthRedirect
 
         /**
          * Bỏ qua nếu là ajax request
-         * Vì khi request ajax, nó bắn sáng admin ajax, mà mình direct wp-admin về login => nó skip phần admin ajax, chỉ direct về login
+         * Vì khi request ajax, nó bắn sang admin ajax, mà mình direct wp-admin về login => nó skip phần admin ajax, chỉ direct về login
          */
         if (defined('DOING_AJAX') && DOING_AJAX) {
             return;
@@ -51,7 +51,7 @@ class AuthRedirect
         }
 
         /**
-         * Trường hợp hiếm hói nếu user đã login nhưng try truy cập login thì cho direct về lại
+         * Trường hợp hiếm hoi nếu user đã login nhưng cố gắng truy cập login thì cho direct về lại
          * Func này có hoặc ko có đều được.
          */
         if (is_user_logged_in() && is_page('login')) {

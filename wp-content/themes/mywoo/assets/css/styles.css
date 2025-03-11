@@ -1,5 +1,6 @@
 /* Spiner */
-#spinner {
+#spinner,
+.spinner {
     border: 4px solid rgba(0, 0, 0, 0.1);
     border-left-color: #3498db;
     border-radius: 50%;
@@ -7,15 +8,60 @@
     height: 30px;
     animation: spin 1s linear infinite;
     margin: 20px auto 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
     display: none;
+    z-index: 999;
+
+}
+
+.spinner-woo-card-loop {
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    animation: spin-woo 1s linear infinite;
+}
+
+.checkmark {
+    font-size: 20px;
+    color: #27ae60;
+    /* Màu xanh lá */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 @keyframes spin {
-    to {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
         transform: rotate(360deg);
     }
 }
 
+@keyframes spin-woo {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ------ START LOGIN ------- */
 #login-message {
     color: green;
     font-size: 14px;
@@ -24,21 +70,39 @@
     margin: 20px auto 0;
 }
 
-/* Header */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* ------ END LOGIN ------- */
+
+/*-----------------START HEADER---------------- */
+.site-header {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    background: transparent;
+    transition: all 0.5s ease;
+    /* transform: translateY(-50%); */
 }
 
-.site-header {
-    background: transparent;
-    position: absolute;
-    top: 5px;
-    z-index: 999;
-    width: 100%;
+.site-header.fixed {
+    position: fixed;
+    background: rgb(255 255 255 / 62%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* transform: translateY(0); */
+    top: 0;
+    backdrop-filter: blur(4px);
+    height: 60px;
+    animation: mations 1s ease;
+}
+
+@keyframes mations {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
 }
 
 .site-header .site-logo {
@@ -57,14 +121,18 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 20px;
+    gap: 10px;
 }
 
 .site-header .info-woo-header a {
     color: #333;
     letter-spacing: 1px;
-    font-size: 18px;
+    font-size: 16px;
     position: relative;
+}
+
+.site-header .info-woo-header #cart-toggle {
+    margin-right: 5px;
 }
 
 .site-logo img {
@@ -90,12 +158,127 @@
     font-size: 18px;
 }
 
-/* Xử lí icon humberger */
+
+
+/* User icon header */
+.info-woo-header .user-menu {
+    position: relative;
+    display: inline-block;
+}
+
+/* USER LOGIN/LOGOUT */
+.info-woo-header .user-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+}
+
+
+/* Cart */
+.info-woo-header .cart-count {
+    font-size: 10px;
+    position: absolute;
+    top: -7px;
+    background-color: #ff748c;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    left: 15px;
+    color: #fff;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-panel {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 25%;
+    height: 100vh;
+    background: #fff;
+    transition: right 0.5s ease;
+    z-index: 999;
+}
+
+.cart-panel.active {
+    right: 0;
+}
+
+.cart-panel .cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #33333333;
+    height: 50px;
+}
+
+.cart-panel .cart-header h4 {
+    flex: 8;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-inline: 1px solid #33333333;
+}
+
+.cart-panel .cart-header p,
+.cart-panel .cart-header #close-cart {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-panel .cart-content {
+    padding: 0 20px;
+    display: block;
+    margin-top: 15px;
+    height: calc(85vh + 21px);
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.cart-panel .cart-content .empty-cart-message {
+    text-align: center;
+}
+
+.cart-panel .cart-footer {
+    /* position: absolute;
+    bottom: 0; */
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    background-color: #333;
+}
+
+.cart-panel .cart-footer .view-cart,
+.cart-panel .cart-footer .checkout {
+    color: #fff;
+    font-size: 16px;
+}
+
+.cart-panel #close-cart {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* HUMBERGER */
 .main-navigation {
     position: fixed;
     top: 0;
     right: -100%;
-    width: 30%;
+    width: 25%;
     height: 100vh;
     background: #333;
     transition: right 0.5s ease;
@@ -120,76 +303,57 @@
     display: block;
 }
 
-.menu-toggle {
-    /* position: relative;
-    right: 20px; */
-    z-index: 1000;
-    width: 35px;
-    height: 20px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: all 0.5s ease;
-}
-
-header .fixed-position {
+.main-navigation {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1001;
-    transition: all 0.5s;
-}
-
-.menu-toggle span {
-    display: block;
-    width: 100%;
-    height: 4px;
-    background: #333;
-    transition: all 0.5s ease;
+    right: -100%;
+    top: 0;
+    width: 30%;
+    height: 100vh;
+    background: #494747;
+    transition: right 0.5s ease;
 }
 
 .menu-open .main-navigation {
     right: 0;
 }
 
-.menu-open .menu-toggle {
-    position: fixed;
+.main-navigation .icon-close {
+    position: absolute;
     top: 20px;
     right: 20px;
-    transform: translateX(-10px);
-    /* Hiệu ứng kéo nhẹ */
-}
-
-/* Hiệu ứng icon */
-.menu-open .menu-toggle span:nth-child(1) {
-    transform: translateY(5px) rotate(45deg);
-}
-
-.menu-open .menu-toggle span:nth-child(2) {
-    opacity: 0;
-}
-
-.menu-open .menu-toggle span:nth-child(3) {
-    transform: translateY(-10px) rotate(-45deg);
-}
-
-
-/* User icon header */
-.info-woo-header .user-menu {
-    position: relative;
-    display: inline-block;
-}
-
-.info-woo-header .user-toggle {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    text-decoration: none;
-    color: #333;
     cursor: pointer;
+    width: 30px;
+    height: 30px;
+}
+
+.main-navigation .icon-close path {
+    stroke: #fff;
+    cursor: pointer;
+}
+
+header .menu-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    z-index: 78;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s;
+}
+
+#overlay.active {
+    opacity: 1;
+    visibility: visible;
 }
 
 .info-woo-header .line-head {
@@ -199,60 +363,130 @@ header .fixed-position {
     color: aquamarine;
 }
 
-.info-woo-header .cart-count {
-    font-size: 10px;
-    position: absolute;
-    top: -13px;
-    background-color: red;
-    border-radius: 50%;
-    width: 22px;
-    height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    left: 15px;
-    border: 2px solid #F2F2F2;
-    font-weight: 700;
-    color: #fff;
+/*-----------------END HEADER---------------- */
+
+
+
+/* ---------------- START BODY ---------------*/
+
+
+/* Start Content Product Loop */
+.custom-content-product {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-content-product .product-link {
+    display: block;
+    position: relative;
+    text-decoration: none;
+}
+
+.custom-content-product .thumb {
+    margin-bottom: 6px;
+}
+
+.custom-content-product a {
+    transition: box-shadow 0.5s ease;
+    padding-bottom: 10px;
+    border-radius: 5px;
+}
+
+.custom-content-product .thumb {
+    overflow: hidden;
+    position: relative;
+}
+
+.custom-content-product img {
+    border-radius: 5px 5px 0 0;
+    transition: all 0.5s ease;
     overflow: hidden;
 }
 
-.info-woo-header .user-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: white;
-    list-style: none;
-    padding: 10px;
-    margin: 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    display: none;
-    min-width: 150px;
-    z-index: 1000;
+.custom-content-product a:hover {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
-.info-woo-header .user-dropdown li {
-    padding: 5px 10px;
+.custom-content-product a:hover img {
+    transform: scale(1.05);
+    filter: opacity(0.6);
 }
 
-.info-woo-header .user-dropdown li a {
-    text-decoration: none;
+.custom-content-product .content {
+    padding: 15px 10px;
+}
+
+.custom-content-product h2 {
+    text-align: center;
+    font-weight: 600;
     color: #333;
-    display: block;
+    text-transform: capitalize;
+    margin-bottom: 10px;
 }
 
-.info-woo-header .user-menu:hover .user-dropdown {
-    display: block;
-    /* Hiện dropdown khi hover */
+.custom-content-product .price {
+    color: #cea384;
+    text-align: center;
+    font-weight: 500;
 }
 
-.info-woo-header .user-toggle:focus+.info-woo-header .user-dropdown,
-.info-woo-header .user-menu:focus-within .info-woo-header .user-dropdown {
-    display: block;
+.custom-content-product .price .old-price {
+    text-decoration: line-through;
+    display: inline-block;
+    color: #979797;
 }
 
+.custom-content-product .price .old-price .woocommerce-Price-currencySymbol {
+    display: none;
+}
 
+.custom-content-product .add-to-cart-btn {
+    position: absolute;
+    top: 12%;
+    left: -10%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.custom-content-product .add-to-cart-btn svg {
+    fill: #fff;
+    width: 20px;
+    height: 20px;
+}
+
+.custom-content-product .product-link:hover .add-to-cart-btn {
+    opacity: 1;
+    left: 12%;
+}
+
+/* End content product loop */
+
+/* Start Mini Cart */
+.custom-mini-cart ul li {
+    list-style: none;
+}
+.custom-mini-cart ul .cart-item .thumb img {
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+}
+.custom-mini-cart .cart-item .remove svg {
+    width: 18px;
+    height: 18px;
+    fill: #cea384;
+    cursor: pointer;
+}
+
+/* ---------------- END BODY ---------------*/
 
 /* Footer */
 .site-footer {
@@ -301,6 +535,70 @@ header .fixed-position {
 }
 
 
+/* SLICK SLIDE */
+.slick-prev,
+.slick-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid #33333361;
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+    background-color: #cea384;
+    border: none;
+}
+
+.slick-prev {
+    left: 20px;
+}
+
+.slick-next {
+    right: 20px;
+}
+
+.slick-prev svg,
+.slick-next svg {
+    stroke: #33333361;
+}
+
+.slick-dots li button {
+    display: none;
+}
+
+.slick-dots {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+}
+
+.slick-dots li {
+    width: 40px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 2px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+/* Khi active thì màu sẽ sáng hơn */
+.slick-dots li.slick-active {
+    background: #cea384;
+    width: 50px;
+}
 
 /* Mobile */
 @media (max-width: 768px) {

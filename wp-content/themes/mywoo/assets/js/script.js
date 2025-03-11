@@ -1,14 +1,45 @@
 jQuery(document).ready(function ($) {
-    // header
+
+    // INIT FANCYBOX
     $('[data-fancybox]').fancybox({
         touch: false
     });
 
-    $(".menu-toggle").click(function () {
-        $("body").toggleClass("menu-open");
-        let isMenuOpen = $('body').hasClass('menu-open');
-        $('.menu-toggle span').css('background', isMenuOpen ? '#fff' : '#333' );
-        $(".menu-toggle").toggleClass("fixed-position");
+    // ----- START HEADER -----
+    // SCROLL FIXED HEADER
+    let header = $(".site-header");
+    $(window).on("scroll", function () {
+        if ($(this).scrollTop() > 0) {
+            header.addClass("active fixed")
+        } else {
+            header.removeClass("active fixed")
+        }
     });
+
+    // HUMBERGER
+    $(".menu-toggle").click(function (e) {
+
+        $("body").toggleClass("menu-open");
+        $('#overlay').addClass('active');
+    });
+    $(".main-navigation .icon-close, #overlay").click(function () {
+        $("body").removeClass("menu-open");
+        $('#overlay').removeClass('active');
+    });
+
+    // CART
+    $("#cart-toggle").on("click", function (e) {
+        e.preventDefault();
+        $("#slide-cart, #overlay").addClass("active");
+    });
+
+    $("#close-cart, #overlay").on("click", function () {
+        $("#slide-cart, #overlay").removeClass("active");
+    });
+
+    // Click outsite
+
+
+    // ----- END HEADER  -----
 
 })
