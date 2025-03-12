@@ -16,6 +16,9 @@ function mytheme_setup()
 add_action('after_setup_theme', 'mytheme_setup');
 
 
+/**
+ * Add Menu Theme
+ */
 function mytheme_menus()
 {
     register_nav_menus(array(
@@ -25,4 +28,7 @@ function mytheme_menus()
 }
 add_action('after_setup_theme', 'mytheme_menus');
 
-
+/**
+ * Add Support Woo
+ */
+add_theme_support('woocommerce');

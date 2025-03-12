@@ -471,8 +471,12 @@ header .menu-toggle {
 /* End content product loop */
 
 /* Start Mini Cart */
+.custom-mini-cart .cart-total {
+    text-align: center;
+}
 .custom-mini-cart ul li {
     list-style: none;
+    position: relative;
 }
 .custom-mini-cart ul .cart-item .thumb img {
     width: 85px;

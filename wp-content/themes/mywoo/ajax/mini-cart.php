@@ -28,10 +28,22 @@ class Mini_Cart
 
     public function update_quantity_cart()
     {
-        $cart = WC()->cart;
+
+        if (!isset($_POST['security']) || !wp_verify_nonce($_POST['security'], 'nonce')) {
+            wp_send_json_error(['message' => 'Invalid nonce']);
+            wp_die();
+        }
+
         $cart_item_key = sanitize_text_field($_POST['cart_item_key']);
         $quantity = intval($_POST['quantity']);
-        if ($quantity < 1) return wp_send_json_error();
+
+        if ($quantity < 1) {
+            wp_send_json_error(['message' => 'Quantity must be at least 1']);
+            wp_die();
+        }
+
+        $cart = WC()->cart;
+
         if (isset($cart->cart_contents[$cart_item_key])) {
             $cart->set_quantity($cart_item_key, $quantity);
             $cart->calculate_totals();
@@ -39,7 +51,10 @@ class Mini_Cart
                 'cart_total' => WC()->cart->get_cart_total(),
                 'cart_count' => WC()->cart->get_cart_contents_count(),
             ]);
+        } else {
+            wp_send_json_error(['message' => 'Cart item not found']);
         }
+        wp_die();
     }
 
     public function remove_cart_quantity()
@@ -52,15 +67,19 @@ class Mini_Cart
         $cart = WC()->cart;
         $cart_item_key = sanitize_text_field($_POST['cart_key_item']);
         // $quantity = intval($_POST['quantity']);
-        
+
         if (isset($cart->cart_contents[$cart_item_key])) {
             $cart->remove_cart_item($cart_item_key);
             $cart->calculate_totals();
             wp_send_json_success([
-                'cart_total' => WC()->cart->get_cart_total(),
+                'cart_total' => WC()->cart->is_empty() ? 'Không có sản phẩm nào trong giỏ hàng' : WC()->cart->get_cart_total(),
                 'cart_count' => WC()->cart->get_cart_contents_count()
             ]);
+        } else {
+            wp_send_json_error(['message' => 'Cart item not found']);
         }
+
+        wp_die();
     }
 }
 
