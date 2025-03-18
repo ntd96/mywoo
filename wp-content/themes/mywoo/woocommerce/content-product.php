@@ -49,14 +49,9 @@ global $product;
             </div>
         </div>
         <div class="content">
-            <h2><?php the_title(); ?></h2>
+            <h2><?php echo mywoo()->custom_get_title($product); ?></h2>
             <p class="price">
-                <?php if ($product->get_sale_price()) : ?>
-                    <span class="old-price"><?php echo str_replace('&nbsp;', '', wc_price($product->get_regular_price())); ?></span>
-                    <span class="sale-price"><?php echo wc_price($product->get_sale_price()); ?></span>
-                <?php else : ?>
-                    <span class="regular-price"><?php echo wc_price($product->get_regular_price()); ?></span>
-                <?php endif; ?>
+                <?php echo mywoo()->custom_display_product_price($product); ?>
             </p>
         </div>
     </a>

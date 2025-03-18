@@ -74,7 +74,7 @@ $args_featured = array(
 $query_featured = new WP_Query($args_featured);
 
 $args_sale = array(
-    'post_type' => 'product',
+    'post_type' => array('product', 'product_variation'),
     'posts_per_page' => 8,
     'meta_query' => array(
         array(
@@ -87,7 +87,7 @@ $args_sale = array(
 );
 
 $query_sale = new WP_Query($args_sale);
-
+$displayed_parents = [];
 ?>
 
 <section class="products">
@@ -103,7 +103,7 @@ $query_sale = new WP_Query($args_sale);
             <div class="tab-pane active" id="new-products">
                 <?php if ($query_new->have_posts()) : ?>
                     <?php while ($query_new->have_posts()) : $query_new->the_post(); ?>
-                        <?php wc_get_template_part('content', 'product'); ?> <!-- Gọi file custom của bạn -->
+                        <?php wc_get_template_part('content', 'product'); ?>
                     <?php endwhile; ?>
                 <?php endif; ?>
                 <?php wp_reset_postdata(); ?>
@@ -111,21 +111,40 @@ $query_sale = new WP_Query($args_sale);
             <div class="tab-pane" id="best-sellers">
                 <?php if ($query_bestseller->have_posts()) : ?>
                     <?php while ($query_bestseller->have_posts()) : $query_bestseller->the_post(); ?>
-                        <?php wc_get_template_part('content', 'product'); ?> <!-- Gọi file custom của bạn -->
+                        <?php wc_get_template_part('content', 'product'); ?>
                     <?php endwhile; ?>
                 <?php endif; ?>
             </div>
             <div class="tab-pane" id="featured">
                 <?php if ($query_featured->have_posts()) : ?>
                     <?php while ($query_featured->have_posts()) : $query_featured->the_post(); ?>
-                        <?php wc_get_template_part('content', 'product'); ?> <!-- Gọi file custom của bạn -->
+                        <?php wc_get_template_part('content', 'product'); ?>
                     <?php endwhile; ?>
                 <?php endif; ?>
             </div>
             <div class="tab-pane" id="on-sale">
                 <?php if ($query_sale->have_posts()) : ?>
-                    <?php while ($query_sale->have_posts()) : $query_sale->the_post(); ?>
-                        <?php wc_get_template_part('content', 'product'); ?> <!-- Gọi file custom của bạn -->
+                        <?php while ($query_sale->have_posts()) : $query_sale->the_post(); ?>
+                            <?php
+                            global $product;
+            
+                            // Xử lý trường hợp product_variation
+                            if ($product->is_type('variation')) {
+                                $parent_id = $product->get_parent_id();
+                                $parent_product = wc_get_product($parent_id);
+                                if ($parent_product) {
+                                    $product = $parent_product; // Dùng sản phẩm cha thay vì biến thể
+                                }
+                            }
+                            if (in_array($product->get_id(), $displayed_parents)) {
+                                continue;
+                            }
+                            
+                            // Đánh dấu sản phẩm cha đã hiển thị
+                            $displayed_parents[] = $product->get_id();
+
+                        ?>
+                        <?php wc_get_template_part('content', 'product'); ?>
                     <?php endwhile; ?>
                 <?php endif; ?>
             </div>

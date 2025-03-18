@@ -29,11 +29,17 @@ class Mini_Cart
     public function update_quantity_cart()
     {
 
+        /**
+         * Check nonce, tăng cường bảo mật
+         */
         if (!isset($_POST['security']) || !wp_verify_nonce($_POST['security'], 'nonce')) {
             wp_send_json_error(['message' => 'Invalid nonce']);
             wp_die();
         }
 
+        /**
+         * WC()->cart->get_cart() => $index hoặc $item['key]
+         */
         $cart_item_key = sanitize_text_field($_POST['cart_item_key']);
         $quantity = intval($_POST['quantity']);
 
@@ -45,10 +51,16 @@ class Mini_Cart
         $cart = WC()->cart;
 
         if (isset($cart->cart_contents[$cart_item_key])) {
+            /**
+             * Hàm này để tự động update số lượng sản phẩm đang trỏ tới
+             */
             $cart->set_quantity($cart_item_key, $quantity);
+            /**
+             * Tự tính toán tổng lại
+             */
             $cart->calculate_totals();
             wp_send_json_success([
-                'cart_total' => WC()->cart->get_cart_total(),
+                'cart_total' => wc_price(WC()->cart->get_cart_contents_total()),
                 'cart_count' => WC()->cart->get_cart_contents_count(),
             ]);
         } else {

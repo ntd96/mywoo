@@ -42,7 +42,7 @@ class Custom_add_to_cart
             /**
              * Case: sau khi update count cart -> click icon cart trên header -> update mini cart, nếu ko, sẽ ko hiển thị sp
              * Update mini_cart trong div cart-content từ icon cart
-             * key: woocomverce_mini_cart() hàm gọi woo/cart/mini-cart.php
+             * key: woocomverce_mini_cart() hàm in ra template, có thể custom (woo/cart/mini-cart.php)
              */
             ob_start();
             woocommerce_mini_cart();

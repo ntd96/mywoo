@@ -75,7 +75,6 @@ jQuery(document).ready(function ($) {
                 $('#spinner').show()
             },
             success: function (res) {
-                console.log(res);
                 if (res.success) {
                     $.fancybox.open(
                         `
@@ -156,8 +155,6 @@ jQuery(document).ready(function ($) {
 
     // Xử lí ajax update quantity cart
     $(document).on('click', '.qty-minus, .qty-plus', function () {
-        console.log('click');
-
         // Tìm thằng cha lớn nhất
         let cartItem = $(this).closest('.cart-item');
         // Lấy attribute data từ thằng cha
@@ -174,13 +171,14 @@ jQuery(document).ready(function ($) {
 
     // Xử lí ajax remove quanity cart
     $(document).on('click', '.custom-mini-cart .remove', function () {
-        console.log('remove');
-
         let cartItem = $(this).closest('.cart-item');
         let cartKeyItem = cartItem.data('cart-item');
         removeItemCart(cartItem, cartKeyItem)
     });
 
+
+
+    // Hàm Rmove Item từ Minicart
     function removeItemCart(cartItem, cartKeyItem) {
         $.ajax({
             type: 'POST',
@@ -195,7 +193,6 @@ jQuery(document).ready(function ($) {
                 showSpin(cartItem);
             },
             success: function (response) {
-                console.log(response);
                 if (response.success) {
                     cartItem.remove();
                     $('.cart-total').html(response.data.cart_total);
@@ -230,7 +227,7 @@ jQuery(document).ready(function ($) {
             },
             success: function (res) {
                 input.val(quantity);
-                $('.cart-total').html(res.data.cart_total);
+                $('.cart-total').html('Total: ' + res.data.cart_total);
                 $('.cart-count').text(res.data.cart_count);
                 $('.cart-header .count').text(res.data.cart_count);
             },
@@ -243,6 +240,106 @@ jQuery(document).ready(function ($) {
             }
         });
     };
+
+
+    // ------------- START ARCHIVE PRODUCT --------------
+
+    // Sort
+    $(document).on('click', '.sort-options li', function () {
+        let sort = $(this).data('sort');
+        $(this).addClass('active');
+        loadProducts({ sort: sort })
+    });
+
+    // Phân trang 
+    $(document).on('click', '.pagination a', function (e) {
+        e.preventDefault();
+        let page = $(this).attr('href').split('page=')[1];
+        let sort = $('.sort-options li.active').data('sort') || 'newest'; // Sort
+        let selectCat = getSelectedCategories(); // Category
+        let selectTag = getSelectedTags(); // Tags
+        loadProducts({ page: page, sort: sort, category: selectCat, tag: selectTag });
+    })
+
+    // FIlter submit
+    $('.filter-archive-product .filter-form').on('submit', function (e) {
+        e.preventDefault();
+        let selectCat = getSelectedCategories();
+        let selectTag = getSelectedTags();
+        let selectSize = getSelectedSize();
+        loadProducts({ category: selectCat, tag: selectTag, size: selectSize })
+    });
+
+    // Hàm lấy danh sách category đã chọn
+    function getSelectedCategories() {
+        let categories = [];
+        $('input[name="filter_cats[]"]:checked').each(function () {
+            categories.push($(this).val());
+        });
+        return categories;
+    };
+
+    // Hàm lấy danh sách tags đã chọn
+    function getSelectedTags() {
+        let tagSelected = [];
+        $("input[name='filter_tags[]']:checked").each(function () {
+            tagSelected.push($(this).val());
+        });
+        return tagSelected;
+    };
+
+    // Hàm lấy danh sách size
+    function getSelectedSize() {
+        let selectedSize = [];
+        $("input[name='filter_size[]']:checked").each(function () {
+            selectedSize.push($(this).val());
+        });
+        return selectedSize;
+    }
+
+    function loadProducts({ page = 1, sort = 'newest', category = [], tag = [], size = [] } = {}) {
+        $.ajax({
+            type: 'POST',
+            url: ajax_object.ajax_url,
+            data: {
+                action: 'load_archive_products',
+                page,
+                sort,
+                category,
+                tag,
+                size,
+                security: ajax_object.security
+            },
+            beforeSend: function () {
+                $('.post-type-archive-product .site-main').append('<div class="spinner-woo-card-loop middle"></div>');
+            },
+            success: function (response) {
+                $('.archive-product .product-list').fadeOut(200, function () {
+                    $(this).html(response.data.html).fadeIn(200);
+                    $('html, body').animate({ scrollTop: $('.archive-product .product-list').offset().top }, 'slow');
+                });
+                $('.archive-product .pagination').fadeOut(200, function () {
+                    $(this).html(response.data.pagination).fadeIn(200);
+                });
+            },
+            complete: function () {
+                $('.post-type-archive-product .site-main').find('.spinner-woo-card-loop').fadeOut(200);
+
+                // CLose sidebar nếu user filter thành công
+                $('.product-sidebar').removeClass('active');
+                $('#overlay').removeClass('active');
+            },
+            error: function (xhr, status, error) {
+                console.log("Lỗi AJAX:", status, error);
+                console.log("Phản hồi từ server:", xhr.responseText);
+            }
+        });
+    }
+
+    loadProducts();
+
+    // ------------- END ARCHIVE PRODUCT --------------
+
 
     function showSpin(div) {
         div.append('<div class="spinner-woo-card-loop"></div>')

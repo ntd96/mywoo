@@ -14,11 +14,10 @@
     transform: translate(-50%, -50%) rotate(0deg);
     display: none;
     z-index: 999;
-
 }
 
 .spinner-woo-card-loop {
-    border: 2px solid rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(0, 0, 0, 0.4);
     border-left-color: #fff;
     border-radius: 50%;
     width: 20px;
@@ -30,7 +29,12 @@
     transform: translate(-50%, -50%);
     animation: spin-woo 1s linear infinite;
 }
-
+.spinner-woo-card-loop.middle {
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+}
 .checkmark {
     font-size: 20px;
     color: #27ae60;
@@ -163,7 +167,8 @@
 /* User icon header */
 .info-woo-header .user-menu {
     position: relative;
-    display: inline-block;
+    display: flex;
+    gap: 10px;
 }
 
 /* USER LOGIN/LOGOUT */
@@ -173,9 +178,39 @@
     gap: 5px;
     text-decoration: none;
     color: #333;
+    overflow: hidden;
     cursor: pointer;
 }
 
+.info-woo-header .user-dropdown {
+    position: absolute;
+    width: max-content;
+    top: 10px;
+    left: -15px;
+    background-color: white;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    opacity: 0;
+    transition: all 0.5s ease;
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+}
+
+.info-woo-header .user-dropdown.active {
+    opacity: 1;
+    top: 35px;
+    visibility: visible;
+}
+
+.info-woo-header .user-dropdown li {
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.info-woo-header .user-dropdown li:hover {
+    background-color: #33333333;
+}
 
 /* Cart */
 .info-woo-header .cart-count {
@@ -380,6 +415,7 @@ header .menu-toggle {
     display: block;
     position: relative;
     text-decoration: none;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 .custom-content-product .thumb {
@@ -474,15 +510,18 @@ header .menu-toggle {
 .custom-mini-cart .cart-total {
     text-align: center;
 }
+
 .custom-mini-cart ul li {
     list-style: none;
     position: relative;
 }
+
 .custom-mini-cart ul .cart-item .thumb img {
     width: 85px;
     height: 85px;
     object-fit: cover;
 }
+
 .custom-mini-cart .cart-item .remove svg {
     width: 18px;
     height: 18px;

@@ -848,10 +848,10 @@ final class WooCommerce {
 		$this->deprecated_hook_handlers['filters'] = new WC_Deprecated_Filter_Hooks();
 
 		// Classes/actions loaded for the frontend and for ajax requests.
-		if ( $this->is_request( 'frontend' ) ) {
+		
+if ( $this->is_request( 'frontend' ) ) {
 			wc_load_cart();
 		}
-
 		$this->load_webhooks();
 
 		/**

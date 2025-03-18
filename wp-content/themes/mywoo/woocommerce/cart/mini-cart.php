@@ -31,18 +31,19 @@ do_action('woocommerce_before_mini_cart'); ?>
 			foreach ($datas as $item):
 				$product = $item['data'];
 				$product_id = $product->get_id();
-				$title = $product->get_name();
+				$title = $product->get_name();	
 				$thumbnail = wp_get_attachment_url($product->get_image_id(), 'thumbnail');
-				$price = WC()->cart->get_product_price($product);
 				$quantity = $item['quantity'];
 			?>
-				<li class="cart-item" data-cart-item="<?php echo esc_attr($item['key']); ?>">
+				<li class="cart-item custom-content-product" data-cart-item="<?php echo esc_attr($item['key']); ?>">
 					<div class="thumb">
 						<img src="<?= esc_url($thumbnail); ?>" alt="<?= esc_attr($title); ?>">
 					</div>
 					<div class="details">
-						<h4 class="title"><?= esc_html($title); ?></h4>
-						<p class="price"><?php echo $price; ?></p>
+						<h4 class="title"><?= mywoo()->custom_get_title($product); ?></h4>
+						<p class="price">
+							<?php mywoo()->custom_display_product_price($product); ?>
+						</p>
 						<div class="quantity">
 							<button class="qty-minus">-</button>
 							<input type="number" class="cart-qty" value="<?php echo esc_attr($quantity); ?>" readonly>
