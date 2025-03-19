@@ -27,6 +27,68 @@
     position: relative;
 }
 
+.archive-product .filter-sort .group-2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.archive-product .view-options {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border: 1px solid #33333333;
+    padding: 5px 8px;
+}
+
+.archive-product .view-options .option-btn {
+    cursor: pointer;
+}
+
+.archive-product .view-options .option-btn.active svg g {
+    fill: #cea384;
+}
+
+.archive-product .group-2 .view-options svg {
+    width: 22px;
+    height: 22px;
+}
+
+.archive-product .group-2 .view-options svg g {
+    fill: #333333a3;
+}
+
+.product-list.grid-medium .custom-content-product {
+    width: calc(95% / 4) !important;
+    /* 3 cột */
+}
+
+.product-list.grid-large .custom-content-product {
+    width: calc(95% / 3) !important;
+    /* 2 cột */
+}
+
+.product-list.grid-large .custom-content-product img {
+    height: auto !important;
+}
+
+.product-list.list .custom-content-product {
+    width: calc(95% / 2) !important;
+    /* 1 cột, dạng list */
+}
+
+.product-list.list .custom-content-product .product-link {
+    display: flex;
+    align-items: center;
+    padding-bottom: 0;
+}
+
+.product-list.list .custom-content-product .thumb {
+    margin-bottom: 0;
+}
+
 .archive-product .filter-sort .sort .sort-options {
     position: absolute;
     width: max-content;
@@ -42,13 +104,16 @@
     border-radius: 5px;
     z-index: 99;
 }
+
 .archive-product .filter-sort .sort-options li {
     padding: 10px 15px;
     cursor: pointer;
 }
+
 .archive-product .filter-sort .sort-options li:hover {
     background-color: #33333333;
 }
+
 .archive-product .filter-sort .sort .sort-options.active {
     opacity: 1;
     top: 35px;
@@ -60,9 +125,11 @@
     height: 18px;
     transition: transform 0.5s ease;
 }
+
 .archive-product .filter-sort .sort svg.active {
     transform: rotate(180deg);
 }
+
 
 .archive-product .product-sidebar {
     position: fixed;
@@ -159,19 +226,58 @@
     margin: 5px;
 }
 
-.color-box {
-    width: 30px;
-    height: 30px;
-    display: inline-block;
-    border-radius: 50%;
-    border: 2px solid transparent;
-    transition: 0.3s;
+/* Tạo icon checked */
+.custom-checkbox:checked::after {
+    content: '✔';
+    color: #cea384;
+    font-size: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #cea384;
+    width: 24px;
+    height: 24px;
+    text-align: center;
 }
 
-.color-filter input {
-    display: none;
+/* Đảm bảo dấu check hiển thị rõ trên nền đen */
+.black:checked::after {
+    color: #fff;
 }
 
-.color-filter input:checked + .color-box {
-    border-color: #333;
+.custom-checkbox:checked::after {
+    border-color: #333333;
+}
+
+.archive-product .color .color-group {
+    display: flex;
+    padding: 15px 10px;
+    column-gap: 25px;
+}
+
+.custom-checkbox {
+    border: 1px solid #33333364;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    margin: initial;
+    cursor: pointer;
+    position: relative;
+    text-align: center;
+}
+
+
+/*  */
+#slider {
+    width: 300px;
+    margin: 30px auto;
+}
+
+.values {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 18px;
 }

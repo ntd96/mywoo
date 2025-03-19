@@ -28,9 +28,12 @@ class Woo_Archive_Product
          */
         $paged = isset($_POST['page']) ? intval($_POST['page']) : 1;
         $sort = $_POST['sort'] ?? 'newest';
-        $cat = $_POST['category'] ?? [];
-        $tag = $_POST['tag'] ?? [];
-        $size = $_POST['size'] ?? [];
+        $cat = !empty($_POST['category']) ? array_map('intval', (array) $_POST['category']) : [];
+        $tag = !empty($_POST['tag']) ? array_map('intval', (array) $_POST['tag']) : [];
+        $size = !empty($_POST['size']) ? array_map('sanitize_text_field', (array) $_POST['size']) : [];
+        $color = !empty($_POST['color']) ? array_map('sanitize_text_field', (array) $_POST['color']) : [];
+        $min = isset($_POST['min']) ? floatval($_POST['min']) : 0;
+        $max = isset($_POST['max']) ? floatval($_POST['max']) : 200;
         /**
          * Init Args để query
          */
@@ -40,8 +43,28 @@ class Woo_Archive_Product
             'paged'          => $paged,
             'tax_query' => [
                 'relation' => 'OR',
-            ]
+            ],
+            'meta_query' => []
         );
+
+
+        /**
+         * Xử lí Price range
+         */
+        $groupPrice = [];
+        if (!empty($min) || !empty($max)) {
+            $groupPrice[] = [
+                'key' => '_price',
+                'value' => [$min, $max],
+                'compare' => 'BETWEEN',
+                'type' => 'NUMERIC'
+            ];
+        }
+
+        if (!empty($groupPrice)) {
+            $args['meta_query'][] = array_merge($groupPrice);
+        }
+
 
         // Sorting
         switch ($sort) {
@@ -67,11 +90,9 @@ class Woo_Archive_Product
         }
 
         // Nhóm CAT TAG
-        $cat_tag_query = array(
-            'relation' => 'OR',
-        );
+        $cat_tag_query = array();
         if (!empty($cat)) {
-            $cat_tag_query = [
+            $cat_tag_query[] = [
                 'taxonomy' => 'product_cat',
                 'field' => 'term_id',
                 'terms' => $cat,
@@ -79,16 +100,20 @@ class Woo_Archive_Product
             ];
         }
         if (!empty($tag)) {
-            $cat_tag_query = [
+            $cat_tag_query[] = [
                 'taxonomy' => 'product_tag',
                 'field' => 'term_id',
                 'terms' => array_map('intval', $tag),
-                'operator' => 'IN' // mặc định dugn2 terms là IN, nhưng thêm vào cho rõ ràng
+                'operator' => 'IN' // mặc định dùng terms là IN, nhưng thêm vào cho rõ ràng
             ];
         }
-        $attr_query = array(
-            'relation' => 'OR'
+
+        $args['tax_query'][] = array_merge(
+            ['relation' => 'OR'],
+            $cat_tag_query,
         );
+
+        $attr_query = array();
         if (!empty($size)) {
             $attr_query = [
                 'taxonomy' => 'pa_size',
@@ -97,11 +122,22 @@ class Woo_Archive_Product
                 'operator' => 'IN'
             ];
         };
+        if (!empty($color)) {
+            $attr_query = [
+                'taxonomy' => 'pa_color',
+                'field' => 'slug',
+                'terms' => $color,
+                'operator' => 'IN'
+            ];
+        };
 
-        
+        $args['tax_query'][] = array_merge(
+            ['relation' => 'OR'],
+            $attr_query,
+        );
 
-        $args['tax_query'][] = $cat_tag_query;
-        $args['tax_query'][] = $attr_query;
+        // if (!empty($groupPrice)) {
+        // }
 
         $query = new WP_Query($args);
         ob_start(); ?>
@@ -112,10 +148,10 @@ class Woo_Archive_Product
             <!-- Hiển thị phân trang -->
             <?php wp_reset_postdata(); ?>
         <?php else: ?>
-            <p>Không có sản phẩm nào!</p>
+            <p>Không có sản phẩm nào!</p>   
         <?php endif; ?>
 
-<?php
+        <?php
         $html = ob_get_clean();
         $pagination = paginate_links(array(
             'total'   => $query->max_num_pages,

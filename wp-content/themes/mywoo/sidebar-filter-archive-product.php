@@ -20,7 +20,6 @@ $pa_color = get_terms([
     'taxonomy' => 'pa_color',
     'hide_empty' => false,
 ]);
-debug_to_console($pa_color);
 $color_map = [
     'black' => '#000000',
     'pink' => '#FFC0CB',
@@ -69,16 +68,28 @@ $color_map = [
         </div>
         <div class="color">
             <h4>Color:</h4>
-            <?php if ($pa_color): ?>
-                <?php foreach ($pa_color as $item): ?>
-                    <?php $color = isset($color_map[$item->slug]) ? $color_map[$item->slug] : '#fff'; ?>
-                    <input type="checkbox" name="filter_size[]" value="<?= esc_attr($item->slug); ?>">
-                    <span class="color-box" style="background-color: <?php echo esc_attr($color); ?>;"></span>
-                    <?= $item->name; ?>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>Not Size yet!</p>
-            <?php endif; ?>
+            <div class="color-group">
+                <?php if ($pa_color): ?>
+                    <?php foreach ($pa_color as $item): ?>
+                        <?php $color = isset($color_map[$item->slug]) ? $color_map[$item->slug] : '#fff'; ?>
+                        <input
+                            class="custom-checkbox <?= esc_attr($item->slug); ?> "
+                            type="checkbox"
+                            name="filter_color[]"
+                            value="<?= esc_attr($item->slug);  ?>"
+                            style="background-color: <?php echo esc_attr($color); ?>;">
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>Not Size yet!</p>
+                <?php endif; ?>
+            </div>
+        </div>
+        <!-- Price -->
+        <div class="price">
+            <div id="slider"></div>
+            <p class="values">
+                <span id="minValue">0</span>$ - <span id="maxValue">200</span>$
+            </p>
         </div>
         <button type="submit">Lọc</button>
     </form>

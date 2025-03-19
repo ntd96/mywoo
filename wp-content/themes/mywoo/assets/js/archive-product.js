@@ -22,6 +22,33 @@ jQuery(document).ready(function ($) {
         }
     })
 
+    $('.option-btn').on('click', function () {
+        $('.option-btn').removeClass('active');
+        $(this).addClass('active');
+        const viewType = $(this).data('view');
+        $('.product-list').removeClass('grid-medium grid-large list')
+            .addClass(viewType);
+    });
 
+    // $('#min-price, #max-price').on('input', function () {
+    //     let min = $('#min-price').val();
+    //     let max = $('#max-price').val();
+    //     console.log(min, max);
 
+    //     $('.price #price-value').text('$' + $(this).val());
+    // });
+
+    let slider = document.querySelector('.price #slider');
+
+    noUiSlider.create(slider, {
+        start: [0, 200],
+        connect: true,
+        range: { min: 0, max: 200 },
+        step: 1,
+    });
+    slider.noUiSlider.on("update", function (values) {
+        $("#minValue").text(Math.round(values[0]));
+        $("#maxValue").text(Math.round(values[1]));
+    });
+    
 })

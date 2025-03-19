@@ -29,12 +29,14 @@
     transform: translate(-50%, -50%);
     animation: spin-woo 1s linear infinite;
 }
+
 .spinner-woo-card-loop.middle {
     top: 50%;
     left: 50%;
     width: 30px;
     height: 30px;
 }
+
 .checkmark {
     font-size: 20px;
     color: #27ae60;
@@ -409,6 +411,9 @@ header .menu-toggle {
 .custom-content-product {
     position: relative;
     display: inline-block;
+    transition: all 0.3s ease;
+    /* Hiệu ứng cho item */
+    /* opacity: 1 */
 }
 
 .custom-content-product .product-link {

@@ -258,7 +258,18 @@ jQuery(document).ready(function ($) {
         let sort = $('.sort-options li.active').data('sort') || 'newest'; // Sort
         let selectCat = getSelectedCategories(); // Category
         let selectTag = getSelectedTags(); // Tags
-        loadProducts({ page: page, sort: sort, category: selectCat, tag: selectTag });
+        let selectSize = getSelectedSize(); // Size
+        let selectedColor = getSelectedColor(); // Color
+        let getPrice = getMinPrice(); // Price
+        loadProducts({
+            page: page,
+            sort: sort,
+            category: selectCat,
+            tag: selectTag,
+            size: selectSize,
+            color: selectedColor,
+            price: getPrice
+        });
     })
 
     // FIlter submit
@@ -267,7 +278,11 @@ jQuery(document).ready(function ($) {
         let selectCat = getSelectedCategories();
         let selectTag = getSelectedTags();
         let selectSize = getSelectedSize();
-        loadProducts({ category: selectCat, tag: selectTag, size: selectSize })
+        let selectedColor = getSelectedColor();
+        let getPrice = getMinPrice();
+        console.log(getPrice);
+
+        loadProducts({ category: selectCat, tag: selectTag, size: selectSize, color: selectedColor, price: getPrice });
     });
 
     // Hàm lấy danh sách category đã chọn
@@ -297,7 +312,37 @@ jQuery(document).ready(function ($) {
         return selectedSize;
     }
 
-    function loadProducts({ page = 1, sort = 'newest', category = [], tag = [], size = [] } = {}) {
+    // Hàm lấy danh sách color
+    function getSelectedColor() {
+        let selectedColor = [];
+        $("input[name='filter_color[]']:checked").each(function () {
+            selectedColor.push($(this).val());
+        });
+        return selectedColor;
+    }
+
+    // Hàm lấy min price
+    function getMinPrice() {
+        let price = {};
+        slider.noUiSlider.on("update", function (values) {
+            var min = parseInt($("#minValue").text())
+            var max = parseInt($("#maxValue").text())
+            price = { min, max };
+        });
+        return price;
+    }
+
+    getSelectedColor();
+
+    function loadProducts({
+        page = 1,
+        sort = 'newest',
+        category = [],
+        tag = [],
+        size = [],
+        color = [],
+        price = {}
+    } = {}) {
         $.ajax({
             type: 'POST',
             url: ajax_object.ajax_url,
@@ -308,6 +353,9 @@ jQuery(document).ready(function ($) {
                 category,
                 tag,
                 size,
+                color,
+                min: price.min,
+                max: price.max,
                 security: ajax_object.security
             },
             beforeSend: function () {
